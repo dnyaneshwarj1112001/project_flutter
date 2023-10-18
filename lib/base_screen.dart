@@ -32,19 +32,19 @@ class _BaseScreenState extends State<BaseScreen> {
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.home),
         title: ("Home"),
-        activeColorPrimary: const Color.fromARGB(255, 38, 0, 255),
+        activeColorPrimary: Colors.blue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.slider_horizontal_below_rectangle),
         title: ("Order"),
-        activeColorPrimary: const Color.fromARGB(255, 38, 0, 255),
+        activeColorPrimary: Colors.blue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.person),
         title: ("Profile"),
-        activeColorPrimary: const Color.fromARGB(255, 38, 0, 255),
+        activeColorPrimary: Colors.blue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
     ];

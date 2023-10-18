@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:project_flutter/Signin.dart';
 import 'package:project_flutter/base_screen.dart';
@@ -16,7 +15,7 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 1), () {
+    Timer(const Duration(seconds: 5), () {
       checkAuthenticationStatus();
     });
   }
@@ -36,10 +35,32 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Added '(' to open the function call
       body: Center(
-        child: Text("Flutter Task"), // Fixed 'hild' to 'child'
-      ), // Added ')' to close the function call
+        child: Container(
+          width: 200, // Adjust the size as needed
+          height: 200, // Adjust the size as needed
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                Icons.android, // Replace with your desired icon
+                size: 100,
+                color: Colors.blue, // Set the icon color
+              ),
+              SizedBox(height: 20),
+              Text(
+                "Flutter Task",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+              ),
+            ],
+          ),
+        ),
+      ),
+      backgroundColor: Colors.lightBlue, // Set the background color
     );
   }
 }

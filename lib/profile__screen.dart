@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:localstorage/localstorage.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
   String name = "";
   String email = "";
   String password = "";
-  getUserByEmail() async {
+
+  @override
+  void initState() {
+    super.initState();
+    getUserByEmail();
+  }
+
+  Future<void> getUserByEmail() async {
     final sp = await SharedPreferences.getInstance();
     setState(() {
       name = sp.getString("name") ?? "";
@@ -23,48 +29,82 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              'Name:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              name,
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 16),
-            Text(
-              'Email:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              email,
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(height: 16),
-            Text(
-              'Password:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              password,
-              style: TextStyle(fontSize: 16),
-            ),
-          ],
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: 200,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey, // Border color
+                    width: 2.0, // Border width
+                  ),
+                  borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                ),
+                padding: const EdgeInsets.all(10.0), // Padding inside the container
+                child: Center(
+                  child: Text(
+                    'Name: $name',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                width: 200,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey, // Border color
+                    width: 2.0, // Border width
+                  ),
+                  borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                ),
+                padding: const EdgeInsets.all(10.0), // Padding inside the container
+                child: Center(
+                  child: Text(
+                    'Email: $email',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                width: 200,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey, // Border color
+                    width: 2.0, // Border width
+                  ),
+                  borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                ),
+                padding: const EdgeInsets.all(10.0), // Padding inside the container
+                child: Center(
+                  child: Text(
+                    'Password: $password',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

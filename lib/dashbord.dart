@@ -1,6 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:project_flutter/profile__screen.dart';
+import 'package:project_flutter/singUp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_flutter/Signin.dart';
 
@@ -28,12 +32,7 @@ class _dashbordState extends State<dashbord> {
     "assets/coursesimg/img4.png",
     "assets/coursesimg/img5.png",
   ];
-  List<String> teacherList1 = [
-    "assets/timg/t1.png",
-    "assets/timg/t2.png",
-    "assets/timg/t3.png",
-    "assets/timg/t4.png",
-  ];
+
   final LocalStorage storage = LocalStorage('signin_data');
   @override
   void initState() {
@@ -50,7 +49,67 @@ class _dashbordState extends State<dashbord> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Drawer(),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(fontSize: 24, color: Colors.white),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.dashboard),
+              title: const Text('Dashboard'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.login),
+              title: const Text('Sign In'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SignInPage(),
+                    ));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person_add),
+              title: const Text('Sign Up'),
+              onTap: () {
+                PersistentNavBarNavigator.pushNewScreen(
+                  context,
+                  screen: SignInPage(),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                );
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SignUpPage(),
+                    ));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.account_circle),
+              title: const Text('Profile'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfilePage(),
+                    ));
+              },
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         iconTheme: const IconThemeData(
           color: Colors.white,
@@ -60,7 +119,7 @@ class _dashbordState extends State<dashbord> {
         ),
         actions: [
           IconButton(
-              icon: Icon(Icons.logout),
+              icon: const Icon(Icons.logout),
               onPressed: () async {
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.setBool('isAuthenticated', false);
@@ -68,45 +127,80 @@ class _dashbordState extends State<dashbord> {
                 PersistentNavBarNavigator.pushNewScreen(
                   context,
                   screen: SignInPage(),
-                  withNavBar: false, // OPTIONAL VALUE. True by default.
+                  withNavBar: false,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );
               })
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Column(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Column(
+                  children: [
+                    const Text(
+                      "Horizontal Image List ->",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    SizedBox(
+                      height: 200.00,
+                      child: ListView.builder(
+                        itemCount: imageList2.length,
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              child: Image.asset(
+                                imageList2[index],
+                                width: 300,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                children: [
+                  Column(
                     children: [
-                      const Text(
-                        "Horizontal Image List ->",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "Verticle images ->",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
                       ),
                       SizedBox(
-                        height: 200.00,
                         child: ListView.builder(
                           itemCount: imageList2.length,
-                          scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ClipRRect(
-                                // Add another ClipRRect for the circular image
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
                                 child: Image.asset(
                                   imageList2[index],
-                                  width: 300,
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 200.00,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -116,92 +210,53 @@ class _dashbordState extends State<dashbord> {
                       ),
                     ],
                   ),
-                ),
-                Column(
-                  children: [
-                    Column(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "Verticle images ->",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18),
-                          ),
-                        ),
-                        SizedBox(
-                          child: ListView.builder(
-                            itemCount: imageList2.length,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10)),
-                                  child: Image.asset(
-                                    imageList2[index],
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 200.00,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    // ignore: prefer_const_constructors
+                ],
+              ),
+              Column(
+                children: [
+                  // ignore: prefer_const_constructors
 
-                    Column(
-                      children: [
-                        // ignore: prefer_const_constructors
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: const Text(
-                            "Grid Images ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18),
-                          ),
+                  Column(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "Grid Images ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
                         ),
-                        SizedBox(
-                          child: GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                            ),
-                            itemCount: imageList2.length,
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10)),
-                                  child: Image.asset(
-                                    imageList2[index],
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 200.00,
-                                    fit: BoxFit.cover,
-                                  ),
+                      ),
+                      SizedBox(
+                        child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
+                          itemCount: imageList2.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ClipRRect(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(10)),
+                                child: Image.asset(
+                                  imageList2[index],
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 200.00,
+                                  fit: BoxFit.cover,
                                 ),
-                              );
-                            },
-                          ),
+                              ),
+                            );
+                          },
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
